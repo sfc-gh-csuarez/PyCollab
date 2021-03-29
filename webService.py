@@ -98,6 +98,20 @@ class WebService():
         return recordingid
 
 
+    def get_recording_data_4url(self,recording_id):
+        sessions = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        recordingid = sessions.get_recording_data_4url(recording_id)
+        return recordingid
+
+
+
+    def getRecordingURL(self,recording_id):
+        sessions = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
+        recording_url = sessions.getRecordingURL(recording_id)
+        return recording_url
+
+
+
     def get_grabaciones_uuid(self,recording_id):
         sessionCollab = SesionControlador.SesionControlador(self.DOMAIN_C,self.getJot(),self.CERT)
         grabacion = sessionCollab.getGrabacionUUID(recording_id)

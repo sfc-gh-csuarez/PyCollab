@@ -37,6 +37,32 @@ def listaGrabaciones(recordings):
 
 
 
+def listaGrabacionesOnlyData(recordings):
+        recordinglist = []
+        x=0
+        try:
+          number_of_recordings = (len(recordings['results']))
+          if number_of_recordings <= 0:
+             return None
+          while x < number_of_recordings:
+            recording_id = recordings['results'][x]['id']
+            rec_data = webService.get_recording_data_4url(recording_id)
+            if rec_data != None:
+                if 'mediaDownloadUrl' in rec_data:  
+                    size = recording_storageSize(rec_data['mediaDownloadUrl'])
+                elif 'storageSize' in recordings['results'][x]:
+                    size = recordings['results'][x]['storageSize']
+                else:
+                    size = recording_storageSize(rec_data['extStreams'][0]['streamUrl'])
+                recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":size,"created": recordings['results'][x]['created']})
+            else:
+                recordinglist.append({"recording_id" : recordings['results'][x]['id'],"recording_name" : recordings['results'][x]['name'],'msg':403})
+            x += 1
+          return recordinglist
+        except TypeError:
+            return None
+
+
 
 def listaGrabacion(recording_info):
     if recording_info == None:
@@ -209,6 +235,27 @@ def downloadOneRecording(recording, course_id):
             return True
         else:
             return None
+
+
+def downloadOneRecordingURL(recording,recording_url, course_id):
+        recording_data = webService.get_recording_data_4url(recording['recording_id'])
+        if recording_data != None:
+            filename = course_id + '-' + recording['recording_id'] + '-' +  checkLongFilenameVideo(course_id, recording['recording_name'])
+            #chatFileName = 'Chat-' + course_id + '-' + recording['recording_id'] + '-' + checkLongFilenameChat(course_id,recording['recording_name'])
+            fullpath = './downloads/'
+            print(fullpath + filename)
+            descargarGrabacion(recording_url,fullpath + filename)
+            '''
+            if len(recording_data['chats']) == 0:
+                print("No chat on the recording")
+            else:
+                print("Downloaling chat")
+                downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+            '''
+            return True
+        else:
+            return None
+           
      
 
 def downloadOneRecordingOnly(recording):
@@ -248,6 +295,11 @@ def downloadRecordingsUUID(recording_lista):
             downloadChatsFromURL(recording_lista['chat'],fullpath + chatFileName)
     else:
         print("No data from Recording ID on Collaborate")
+
+
+def downloadFromURL(recording_id):
+    url = webService.getRecordingURL(recording_id)
+    return url
 
 
 
