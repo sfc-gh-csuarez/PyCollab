@@ -11,15 +11,14 @@ if __name__ == "__main__":
     if  param[0] != '':
         recodingsids = ut.listRecordingids(param[0])
         for recording in recodingsids:
-            if ut.deleteRecording(recording) == True:
-                print(recording + ' was deleted.')
+            resp = ut.deleteRecording(recording)
+            if resp == True:
+                print(recording + ': Recording was deleted!')
                 report.append([recording, 'deleted'])
-            elif ut.deleteRecording(recording) == False:
-                print(recording + ' not found.')
-                report.append([recording, 'not found'])
-            elif ut.deleteRecording(recording) == None:
-                print(recording + ' error: not found')
-                report.append([recording, 'not found'])
+            elif resp == '404':
+                print(recording + ': Resource not found, Already deleted')
+                report.append([recording, 'Resource not found, Already deleted'])
+            
         if len(report) > 0: 
             print(ut.crearReporteDelete(report))
         else:

@@ -162,11 +162,8 @@ class SesionControlador():
             r.raise_for_status()
             if r.status_code == 200:
                 return True
-            elif r.status_code == 404:
-                return False
-            else:
-                return None
         except requests.exceptions.HTTPError as e:
+            return '404'
             pass
 
 

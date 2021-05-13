@@ -314,10 +314,11 @@ def downloadChatsFromURL(chat_url,name):
 
 def deleteRecording(recording_id):
     delete_info = webService.delete_recording(recording_id)
-    if delete_info != None:
+    if delete_info == True:
         return True
     else:
         return delete_info
+         
 
 
 
@@ -844,7 +845,7 @@ def collabStorage(fileName:str, ltiAccount:str):
                 if registro['SessionOwner'] == ltiAccount:
                     storage += float(registro['StorageUsageGigabytes'])
             fstorage = round(storage)
-            return '{:,}'.format(storage)
+            return '{:,}'.format(fstorage)
         nline.close()
     else:
         return None
