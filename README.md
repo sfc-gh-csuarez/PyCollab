@@ -136,17 +136,37 @@ python3 CollabReport.py -f learn_courses.txt -w 10
 ## Scenario 2
 ### Search recording from Moodle to Collaborate  
 
-<li>if you have the Moodle session Id created by Moodle Collaborate plugin as input data on the file moodle_plugin_sessions.txt, where -w is a value of weeks back for as starting point of searching for recordings:
-<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i>
+<p>If you have the Moodle with Plugin Integration</p>
+
+<li>
+Add one per row,the sessionuid column values from mdl_collaborate table from Moodle database on the file moodle_plugin_sessions.txt.
 </li>
+<li>
+-w is a value of weeks back for as starting point of searching for recordings
+</li>
+<li>
+If the recording have chats, those will be downloaded too.</i>
+</li>
+
+<p>Then run the command:</p>
 
 ```
 python3 CollabMoodle.py -s moodle_plugin_sessions.txt -w 10   
 ```
+
+
+<p>If you have the Moodle with LTI Integration</p>
+
 <li>
-if you have the Moodle courses ID(s) related to Moodle LTI Tool as input data on the file moodle_lti_id.txt, where -w is a value of weeks back for as starting point of searching for recordings:
-<B>Note:</B> <i>if the recording have chats, those will be downloaded too.</i>
+Add one per row, the id column values from mdl_lit table from Moodle database on the file moodle_lti_id.txt, check that course column value from from mdl_lit table match with id value from mdl_course table.
 </li>
+<li>
+ -w is a value of weeks back for as starting point of searching for recordings
+ <li>
+<B>If the recording have chats, those will be downloaded too.</i>
+</li>
+
+<p>Then run the command:</p>
 
 ```
 python3 CollabMoodle.py -l moodle_lti_id.txt -w 10   
