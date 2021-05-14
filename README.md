@@ -163,7 +163,7 @@ Add one per row, the id column values from mdl_lit table from Moodle database on
 <li>
  -w is a value of weeks back for as starting point of searching for recordings
  <li>
-<B>If the recording have chats, those will be downloaded too.</i>
+If the recording have chats, those will be downloaded too.</i>
 </li>
 
 <p>Then run the command:</p>
