@@ -27,7 +27,14 @@ def listaGrabaciones(recordings):
                     size = recordings['results'][x]['storageSize']
                 else:
                     size = recording_storageSize(rec_data['extStreams'][0]['streamUrl'])
-                recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":size,"created": recordings['results'][x]['created']})
+                    
+                #recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":size,"created": recordings['results'][x]['created']})
+                if 'created' in recordings['results'][x]:
+                    creationDate = recordings['results'][x]['created']
+                else:
+                    today = datetime.datetime.today()
+                    creationDate  = today.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+                recordinglist.append({"recording_id" : recordings['results'][x]['id'], "recording_name" : recordings['results'][x]['name'], "duration":recordings['results'][x]['duration'], "storageSize":size,"created": creationDate})
             else:
                 recordinglist.append({"recording_id" : recordings['results'][x]['id'],"recording_name" : recordings['results'][x]['name'],'msg':403})
             x += 1
@@ -156,11 +163,14 @@ def recording_storageSize(url:str):
 def descargarGrabacion(url:str, fname:str):
     resp = requests.get(url,stream=True)
     total = int(resp.headers.get('content-length',0))
+    #new
+    #resp.close()
     progress_bar = tqdm(total=total, unit='iB', unit_scale=True,unit_divisor=1024)
     with open(fname,'wb') as file:
             for data in resp.iter_content(chunk_size=1024):
                 size = file.write(data)
                 progress_bar.update(size)
+    resp.close()
     progress_bar.close()
 
 
@@ -743,6 +753,7 @@ def calcularTiempo(s):
 def convertirFecha(fecha):
    objetoFecha = datetime.datetime.strptime(fecha,'%Y-%m-%dT%H:%M:%S.%fZ')
    return objetoFecha.strftime('%b %d,%Y')
+
 
 
 def semanasAtiempo(weeks):
